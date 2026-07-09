@@ -1,0 +1,419 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  BookOpen, 
+  Users, 
+  Settings, 
+  Plus, 
+  Trash2, 
+  Edit2, 
+  Save, 
+  Check, 
+  X, 
+  ChevronRight, 
+  ChevronDown, 
+  Play, 
+  RotateCcw, 
+  Sparkles, 
+  Send, 
+  LogOut, 
+  LogIn, 
+  Menu, 
+  Image, 
+  FileText, 
+  CheckCircle2, 
+  Award 
+} from 'lucide-react';
+
+const TRANSLATIONS = {
+  id: {
+    app_title: 'MoodleLite LMS',
+    login_title: 'Masuk Portal Pembelajaran',
+    username_label: 'Nama Pengguna / Email',
+    password_label: 'Kata Sandi',
+    login_btn: 'Masuk Sekarang',
+    role_admin: 'Administrator',
+    role_teacher: 'Pengajar (Guru/Dosen)',
+    role_student: 'Peserta Didik (Siswa)',
+    nav_home: 'Beranda Kelas',
+    nav_users: 'Daftar Anggota',
+    nav_admin: 'Admin Portal',
+    add_course: 'Tambah Kelas Baru',
+    course_name: 'Nama Lengkap Kelas',
+    course_code: 'Kode Akses Kelas',
+    course_desc: 'Deskripsi Singkat',
+    save_course: 'Simpan Kelas',
+    edit_mode_on: 'Aktifkan Mode Ubah ✏️',
+    edit_mode_off: 'Selesai Mengubah ✔️',
+    add_activity: 'Tambahkan Aktivitas',
+    activity_title: 'Judul Aktivitas/Materi',
+    activity_type: 'Tipe Konten',
+    activity_desc: 'Instruksi Detail',
+    save_activity: 'Terbitkan Aktivitas',
+    logo_label: 'Logo Institusi Resmi',
+    school_name_label: 'Nama Sekolah / Perguruan Tinggi',
+    canvas_modal_title: 'Gemini AI Canvas Studio — Studio Penciptaan Interaktif',
+    canvas_desc: 'Bangun, diskusikan, dan modifikasi simulasi sains, tugas interaktif, maupun widget belajar menggunakan obrolan cerdas.',
+    canvas_template_label: 'Pilih Template Simulasi Praktikum',
+    canvas_tpl_custom: 'Rancang Kustom dengan Perintah AI',
+    canvas_tpl_cell: 'Simulasi Struktur Sel Hewan (Biologi)',
+    canvas_tpl_physics: 'Simulator Hukum II Newton (Fisika)',
+    canvas_tpl_chem: 'Sandbox Penyeimbang Molekul Air (Kimia)',
+    canvas_prompt_label: 'Instruksi Perintah AI (Prompt)',
+    canvas_prompt_placeholder: 'Jelaskan modul visualisasi, game simulasi, kalkulator, atau media belajar apa saja yang ingin Anda ciptakan secara mendalam...',
+    canvas_btn_generate: 'Hasilkan dengan Gemini AI',
+    canvas_btn_generating: 'Sedang Merancang Kode...',
+    canvas_preview_header: 'Pratinjau Interaktif Langsung (Sandbox)',
+    canvas_btn_publish: 'Terbitkan Media Ciptaan ke Rencana Pembelajaran Kelas'
+  },
+  en: {
+    app_title: 'MoodleLite LMS',
+    login_title: 'Sign In to Learning Portal',
+    username_label: 'Username / Email',
+    password_label: 'Password',
+    login_btn: 'Login Now',
+    role_admin: 'Administrator',
+    role_teacher: 'Instructor (Teacher/Lecturer)',
+    role_student: 'Student',
+    nav_home: 'Course Dashboard',
+    nav_users: 'Participants',
+    nav_admin: 'Site Admin',
+    add_course: 'Add New Course',
+    course_name: 'Course Full Name',
+    course_code: 'Access Code',
+    course_desc: 'Brief Description',
+    save_course: 'Save Course',
+    edit_mode_on: 'Enable Editing Mode ✏️',
+    edit_mode_off: 'Finish Editing ✔️',
+    add_activity: 'Add an Activity',
+    activity_title: 'Activity Title',
+    activity_type: 'Content Type',
+    activity_desc: 'Detailed Instructions',
+    save_activity: 'Publish Activity',
+    logo_label: 'Official Campus/School Logo',
+    school_name_label: 'School / University Name',
+    canvas_modal_title: 'Gemini AI Canvas Studio — Interactive Creation Sandbox',
+    canvas_desc: 'Build, discuss, and modify science simulations, custom interactive assignments, or learning widgets using smart chats.',
+    canvas_template_label: 'Choose Simulation / Content Template',
+    canvas_tpl_custom: 'Design Custom with AI Instructions',
+    canvas_tpl_cell: 'Animal Cell Structure Simulation (Biology)',
+    canvas_tpl_physics: 'Newton\'s Second Law Simulator (Physics)',
+    canvas_tpl_chem: 'Water Molecules Synthesizer (Chemistry)',
+    canvas_prompt_label: 'AI Instruction Prompt',
+    canvas_prompt_placeholder: 'Describe the visualization module, simulation game, calculator, or interactive tool you want to create in detail...',
+    canvas_btn_generate: 'Generate with Gemini AI',
+    canvas_btn_generating: 'Designing Code Sandbox...',
+    canvas_preview_header: 'Live Interactive Sandbox Preview',
+    canvas_btn_publish: 'Publish Created Media to Class Syllabus Plan'
+  }
+};
+
+const AI_CANVAS_PRESETS = {
+  cell: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0b1329; color: #f8fafc; text-align: center; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; }
+    .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 800px; justify-content: center; width: 100%; }
+    .canvas-container { background: #111b35; padding: 15px; border-radius: 20px; border: 2px solid #1e293b; box-shadow: 0 10px 25px rgba(0,0,0,0.5); position: relative; }
+    canvas { display: block; background: #0f172a; border-radius: 12px; }
+    .info-panel { background: #111b35; padding: 20px; border-radius: 20px; border: 2px solid #1e293b; width: 280px; text-align: left; }
+    h2 { margin-top: 0; color: #38bdf8; font-size: 18px; text-transform: uppercase; }
+    .badge { background: #38bdf8; color: #0b1329; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+    p { font-size: 13px; line-height: 1.5; color: #cbd5e1; }
+  </style>
+</head>
+<body>
+  <h2>🔬 Laboratorium Struktur Sel Hewan Interaktif</h2>
+  <div style="margin-bottom:12px;"><span class="badge">Biologi Sel</span></div>
+  <div class="container">
+    <div class="canvas-container">
+      <canvas id="cellCanvas" width="300" height="300"></canvas>
+      <div style="font-size:11px; color:#64748b; margin-top:8px;">*Klik pada bagian organel sel untuk memicu info rincian</div>
+    </div>
+    <div class="info-panel" id="infoPanel">
+      <h3 style="color:#fbbf24; margin-top:0;" id="organelleName">Nukleus (Inti Sel)</h3>
+      <p id="organelleDesc">Merupakan pusat kendali seluruh aktivitas sel. Mengandung materi genetik (DNA) yang berfungsi mengatur metabolisme, pembelahan sel, dan sintesis protein.</p>
+    </div>
+  </div>
+  <script>
+    const cellCanvas = document.getElementById("cellCanvas");
+    const cellCtx = cellCanvas.getContext("2d");
+    const organelles = [
+      { name: "Nukleus", x: 150, y: 150, r: 40, color: "#ec4899", desc: "Pusat kendali utama sel yang membungkus materi genetik (DNA). Berfungsi memimpin replikasi dan transkripsi protein." },
+      { name: "Mitokondria", x: 230, y: 100, r: 18, color: "#ef4444", desc: "Pembangkit tenaga energi sel (Powerhouse of Cell). Mengubah glukosa menjadi energi kimia ATP melalui respirasi seluler." },
+      { name: "Aparatus Golgi", x: 80, y: 220, r: 22, color: "#f59e0b", desc: "Sistem pengemasan dan penyortiran makromolekul seperti protein dan lipid untuk disekresikan keluar sel." },
+      { name: "Lisosom", x: 80, y: 100, r: 12, color: "#10b981", desc: "Organel penghasil enzim hidrolitik untuk mendaur ulang sampah organik sel serta menghancurkan benda asing." }
+    ];
+    function draw() {
+      cellCtx.clearRect(0, 0, 300, 300);
+      cellCtx.fillStyle = "#1e1b4b";
+      cellCtx.beginPath(); cellCtx.arc(150, 150, 135, 0, Math.PI * 2); cellCtx.fill();
+      cellCtx.strokeStyle = "#312e81"; cellCtx.lineWidth = 6; cellCtx.stroke();
+      organelles.forEach(function(org) {
+        cellCtx.fillStyle = org.color;
+        cellCtx.beginPath(); cellCtx.arc(org.x, org.y, org.r, 0, Math.PI*2); cellCtx.fill();
+        cellCtx.strokeStyle = "rgba(255,255,255,0.4)"; cellCtx.lineWidth = 2; cellCtx.stroke();
+        cellCtx.fillStyle = "white"; cellCtx.font = "bold 9px sans-serif"; cellCtx.textAlign = "center";
+        cellCtx.fillText(org.name, org.x, org.y + 4);
+      });
+    }
+    cellCanvas.addEventListener("click", function(e) {
+      const rect = cellCanvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+      organelles.forEach(function(org) {
+        const dist = Math.sqrt(Math.pow(clickX - org.x, 2) + Math.pow(clickY - org.y, 2));
+        if (dist <= org.r) {
+          document.getElementById("organelleName").innerText = org.name;
+          document.getElementById("organelleDesc").innerText = org.desc;
+          cellCtx.strokeStyle = "#fbbf24"; cellCtx.lineWidth = 4;
+          cellCtx.beginPath(); cellCtx.arc(org.x, org.y, org.r + 4, 0, Math.PI*2); cellCtx.stroke();
+          setTimeout(draw, 400);
+        }
+      });
+    });
+    draw();
+  </script>
+</body>
+</html>`,
+  physics: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: white; text-align: center; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; }
+    .panel { background: #1e293b; padding: 20px; border-radius: 16px; border: 1px solid #334155; width: 100%; max-width: 480px; text-align: left; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+    .slider-group { margin-bottom: 12px; }
+    label { display: block; font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: bold; margin-bottom: 4px; }
+    input[type=range] { width: 100%; }
+    .track { width: 100%; height: 60px; background: #334155; border-radius: 8px; position: relative; margin: 15px 0; overflow: hidden; }
+    .cart { width: 50px; height: 30px; background: #3b82f6; border-radius: 6px; position: absolute; bottom: 5px; transition: left 0.1s linear; }
+    .wheel { width: 12px; height: 12px; background: black; border-radius: 50%; position: absolute; bottom: -4px; border: 2px solid #cbd5e1; }
+    .formula { text-align: center; font-size: 18px; font-weight: bold; margin: 15px 0; color: #fbbf24; }
+  </style>
+</head>
+<body>
+  <h2>🍎 Newton Physics Lab: Hukum II Newton</h2>
+  <div class="panel">
+    <div class="formula">a = F / m = <span id="accelVal">5.0</span> m/s²</div>
+    <div class="slider-group">
+      <label>Gaya Pendorong (F): <span id="f-val">50</span> N</label>
+      <input type="range" id="force" min="10" max="150" value="50" oninput="sim()">
+    </div>
+    <div class="slider-group">
+      <label>Massa Balok (m): <span id="m-val">10</span> kg</label>
+      <input type="range" id="mass" min="2" max="30" value="10" oninput="sim()">
+    </div>
+    <div class="track">
+      <div class="cart" id="cart" style="left: 10px;">
+        <div class="wheel" style="left: 5px;"></div>
+        <div class="wheel" style="right: 5px;"></div>
+      </div>
+    </div>
+    <button onclick="runCart()" style="width:100%; padding:10px; background:#fbbf24; color:#0f172a; font-weight:bold; border:none; border-radius:8px; cursor:pointer;">Mulai Dorong Balok</button>
+  </div>
+  <script>
+    let pos = 10, animFrame;
+    function sim() {
+      const F = parseFloat(document.getElementById("force").value);
+      const m = parseFloat(document.getElementById("mass").value);
+      document.getElementById("f-val").innerText = F;
+      document.getElementById("m-val").innerText = m;
+      document.getElementById("accelVal").innerText = (F / m).toFixed(2);
+    }
+    function runCart() {
+      cancelAnimationFrame(animFrame);
+      pos = 10;
+      const F = parseFloat(document.getElementById("force").value);
+      const m = parseFloat(document.getElementById("mass").value);
+      const accel = F / m;
+      let speed = 0;
+      function update() {
+        speed += accel * 0.05;
+        pos += speed;
+        if (pos > 400) {
+          pos = 10;
+          cancelAnimationFrame(animFrame);
+        } else {
+          document.getElementById("cart").style.left = pos + "px";
+          animFrame = requestAnimationFrame(update);
+        }
+      }
+      update();
+    }
+  </script>
+</body>
+</html>`,
+  chem: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #111827; color: white; text-align: center; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; }
+    .card { background: #1f2937; padding: 25px; border-radius: 20px; border: 1px solid #374151; box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-width: 480px; width: 100%; }
+    .equation { display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 24px; font-weight: bold; margin: 25px 0; color: #a78bfa; }
+    .coef { background: #374151; color: white; border: none; padding: 4px 10px; border-radius: 8px; cursor: pointer; font-size: 14px; margin: 0 2px; }
+    .atom-box { display: flex; justify-content: space-around; margin-top: 15px; background: #111827; padding: 12px; border-radius: 12px; }
+    .status { font-size: 16px; font-weight: bold; padding: 10px; border-radius: 10px; margin-top: 15px; }
+    .status.ok { background: #064e3b; color: #34d399; }
+    .status.no { background: #7f1d1d; color: #f87171; }
+  </style>
+</head>
+<body>
+  <h2>🧪 Chemistry Sandbox: Penyeimbang Reaksi</h2>
+  <div class="card">
+    <div style="font-size: 11px; text-transform: uppercase; color: #9ca3af; font-weight: bold;">Sintesis Air</div>
+    <div class="equation">
+      <div>
+        <button class="coef" onclick="mod('h2', 1)">+</button>
+        <span id="c-h2">1</span> H₂
+        <button class="coef" onclick="mod('h2', -1)">-</button>
+      </div>
+      <div>+</div>
+      <div>
+        <button class="coef" onclick="mod('o2', 1)">+</button>
+        <span id="c-o2">1</span> O₂
+        <button class="coef" onclick="mod('o2', -1)">-</button>
+      </div>
+      <div>➔</div>
+      <div>
+        <button class="coef" onclick="mod('h2o', 1)">+</button>
+        <span id="c-h2o">1</span> H₂O
+        <button class="coef" onclick="mod('h2o', -1)">-</button>
+      </div>
+    </div>
+    <div class="atom-box">
+      <div style="text-align: left;">
+        <div style="font-weight: bold; color:#ef4444;">REAKTAN (Kiri):</div>
+        <div>Hidrogen (H): <span id="react-h">2</span></div>
+        <div>Oksigen (O): <span id="react-o">2</span></div>
+      </div>
+      <div style="text-align: left;">
+        <div style="font-weight: bold; color:#3b82f6;">PRODUK (Kanan):</div>
+        <div>Hidrogen (H): <span id="prod-h">2</span></div>
+        <div>Oksigen (O): <span id="prod-o">1</span></div>
+      </div>
+    </div>
+    <div class="status no" id="statusBox">REAKSI BELUM SEIMBANG</div>
+  </div>
+  <script>
+    let c = { h2: 1, o2: 1, h2o: 1 };
+    function mod(key, val) {
+      c[key] = Math.max(1, c[key] + val);
+      document.getElementById('c-' + key).innerText = c[key];
+      calc();
+    }
+    function calc() {
+      const h_react = c.h2 * 2;
+      const o_react = c.o2 * 2;
+      const h_prod = c.h2o * 2;
+      const o_prod = c.h2o * 1;
+      document.getElementById('react-h').innerText = h_react;
+      document.getElementById('react-o').innerText = o_react;
+      document.getElementById('prod-h').innerText = h_prod;
+      document.getElementById('prod-o').innerText = o_prod;
+      const sBox = document.getElementById('statusBox');
+      if (h_react === h_prod && o_react === o_prod) {
+        sBox.innerText = "SEIMBANG! (Reaksi Sempurna)";
+        sBox.className = "status ok";
+      } else {
+        sBox.innerText = "REAKSI BELUM SEIMBANG";
+        sBox.className = "status no";
+      }
+    }
+  </script>
+</body>
+</html>`
+};
+
+export default function App() {
+  const [lang, setLang] = useState('id');
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Default true agar langsung bypass login untuk preview
+
+  const t = (key) => TRANSLATIONS[lang]?.[key] || key;
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-gray-100 font-sans p-6">
+      {/* Header Dashboard MoodleLite */}
+      <header className="flex justify-between items-items border-b border-gray-800 pb-4 mb-6">
+        <div className="flex items-center gap-3">
+          <BookOpen className="w-8 height-8 text-indigo-500" />
+          <div>
+            <h1 className="text-xl font-bold text-white">{t('app_title')}</h1>
+            <p className="text-xs text-gray-400">Malang Academic Center Portal</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <select 
+            value={lang} 
+            onChange={(e) => setLang(e.target.value)}
+            className="bg-gray-800 text-sm rounded px-2 py-1 border border-gray-700 focus:outline-none"
+          >
+            <option value="id">Bahasa Indonesia</option>
+            <option value="en">English</option>
+          </select>
+          <span className="text-sm bg-gray-800 text-indigo-400 px-3 py-1 rounded-full font-medium">
+            {t('role_admin')}
+          </span>
+        </div>
+      </header>
+
+      {/* Konten Utama Preview */}
+      <main className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* Sidebar Mini */}
+        <aside className="space-y-2">
+          <button className="w-full flex items-center gap-3 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium transition">
+            <Menu className="w-4 h-4" /> {t('nav_home')}
+          </button>
+          <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-800 text-gray-400 hover:text-white rounded-lg text-sm font-medium transition">
+            <Users className="w-4 h-4" /> {t('nav_users')}
+          </button>
+          <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-800 text-gray-400 hover:text-white rounded-lg text-sm font-medium transition">
+            <Settings className="w-4 h-4" /> {t('nav_admin')}
+          </button>
+        </aside>
+
+        {/* Workspace Utama: Menampilkan Preset Khusus Media Interaktif dari Objek AI_CANVAS_PRESETS */}
+        <section className="md:col-span-3 space-y-6">
+          <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h2 className="text-lg font-bold text-white mb-1">🧬 Biologi Modern 2026 (BIO2026)</h2>
+                <p className="text-xs text-gray-400">Sesi Pertemuan 1: Keajaiban Struktur Sel</p>
+              </div>
+              <span className="flex items-center gap-1 text-xs bg-purple-900/50 text-purple-300 border border-purple-700 px-3 py-1 rounded-full">
+                <Sparkles className="w-3 h-3" /> Gemini AI Engine Enabled
+              </span>
+            </div>
+
+            <p className="text-sm text-gray-300 mb-6 bg-gray-900/50 p-3 rounded border border-gray-750">
+              {t('canvas_desc')}
+            </p>
+
+            {/* Sandbox Live Frame Renderer */}
+            <div className="border border-gray-700 rounded-xl overflow-hidden bg-gray-950">
+              <div className="bg-gray-800 px-4 py-2 border-b border-gray-700 flex items-center justify-between">
+                <span className="text-xs font-mono text-gray-400 flex items-center gap-2">
+                  <Play className="w-3 h-3 text-emerald-400 fill-emerald-400" /> {t('canvas_preview_header')}
+                </span>
+                <div className="flex gap-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                </div>
+              </div>
+              
+              {/* Me-render isi sandox interaktif (Menggunakan preset Biologi Sel Hewan) */}
+              <div className="p-4 flex justify-center items-center min-h-[400px]">
+                <iframe
+                  title="Live Sandbox Preview"
+                  srcDoc={AI_CANVAS_PRESETS.cell}
+                  className="w-full min-h-[450px] border-0 rounded-lg bg-[#0b1329]"
+                  sandbox="allow-scripts"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
