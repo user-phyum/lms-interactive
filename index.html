@@ -32,6 +32,73 @@
     /* Drag & Drop Visual Indicator */
     .drag-over { border: 2px dashed #4f46e5 !important; background-color: #f5f3ff !important; }
     .drag-item-over { border-top: 3px solid #4f46e5 !important; }
+
+    /* Minimized Sidebar Overrides for perfect alignment */
+    #sidebar.aside-minimized {
+      width: 4rem !important; /* Forces sidebar width to 64px */
+    }
+    #sidebar.aside-minimized .sidebar-hide-on-min {
+      display: none !important;
+    }
+    #sidebar.aside-minimized .sidebar-center-on-min {
+      justify-content: center !important;
+      gap: 0 !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    #sidebar.aside-minimized #sidebar-brand-header {
+      padding: 1rem 0.25rem !important;
+      flex-direction: column !important;
+      gap: 0.75rem !important;
+      justify-content: center !important;
+    }
+    #sidebar.aside-minimized #sidebar-user-card {
+      margin: 0.5rem 0.35rem !important;
+      padding: 0.5rem 0 !important;
+      justify-content: center !important;
+    }
+    #sidebar.aside-minimized nav {
+      padding-left: 0.35rem !important;
+      padding-right: 0.35rem !important;
+      align-items: center !important;
+    }
+    #sidebar.aside-minimized nav button {
+      justify-content: center !important;
+      padding: 0 !important;
+      border-left-width: 0px !important;
+      width: 2.75rem !important;
+      height: 2.75rem !important;
+      border-radius: 12px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    #sidebar.aside-minimized nav button i {
+      margin: 0 !important;
+      width: auto !important;
+      font-size: 1.1rem !important;
+    }
+    #sidebar.aside-minimized #sidebar-logo-box {
+      margin: 0 auto !important;
+    }
+    #sidebar.aside-minimized #sidebar-toggle-btn {
+      align-self: center !important;
+      margin: 0 auto !important;
+    }
+    #sidebar.aside-minimized #sidebar-logout-box {
+      padding: 0.75rem 0.35rem !important;
+    }
+    #sidebar.aside-minimized #sidebar-logout-box button {
+      justify-content: center !important;
+      padding: 0 !important;
+      width: 2.75rem !important;
+      height: 2.75rem !important;
+      margin: 0 auto !important;
+      border-radius: 12px !important;
+    }
+    #sidebar.aside-minimized #sidebar-logout-box button i {
+      margin: 0 !important;
+      font-size: 1.1rem !important;
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased transition-colors duration-200">
@@ -111,27 +178,27 @@
     <aside id="sidebar" class="bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 transition-all duration-300 w-full md:w-64">
       <div class="flex flex-col h-full">
         <!-- Sidebar Brand Header -->
-        <div class="border-b border-slate-100 flex items-center justify-between p-4 md:p-6 gap-3">
-          <div class="flex items-center gap-3 min-w-0">
+        <div class="border-b border-slate-100 flex items-center justify-between p-4 md:p-6 gap-3" id="sidebar-brand-header">
+          <div class="flex items-center gap-3 min-w-0 sidebar-center-on-min">
             <!-- Sidebar dynamic logo support -->
             <div class="p-2 rounded-xl bg-indigo-50 text-indigo-600 shrink-0 flex items-center justify-center w-10 h-10 overflow-hidden" id="sidebar-logo-box">
               <i class="fa-solid fa-graduation-cap text-lg" id="sidebar-logo-icon"></i>
               <img id="sidebar-logo-img" class="hidden w-full h-full object-contain rounded" alt="Sidebar Logo">
             </div>
-            <div class="min-w-0">
+            <div class="min-w-0 sidebar-hide-on-min">
               <h4 class="text-sm font-extrabold text-slate-900 tracking-tight leading-none mb-1 truncate" id="sidebar-school-name">MoodleLite</h4>
               <span class="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-bold tracking-wider font-mono uppercase truncate block w-fit" id="sidebar-short-name">MDL</span>
             </div>
           </div>
-          <button onclick="toggleSidebar()" class="hidden md:flex p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors shrink-0">
+          <button onclick="toggleSidebar()" class="hidden md:flex p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors shrink-0" id="sidebar-toggle-btn">
             <i class="fa-solid fa-arrow-left" id="sidebar-toggle-icon"></i>
           </button>
         </div>
 
         <!-- Sidebar User Card Info -->
-        <div class="p-4 mx-4 my-3 bg-slate-50 rounded-xl border border-slate-150 flex items-center gap-3">
+        <div class="p-4 mx-4 my-3 bg-slate-50 rounded-xl border border-slate-150 flex items-center gap-3" id="sidebar-user-card">
           <div class="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center font-bold text-xs text-slate-700 shrink-0 uppercase" id="user-avatar-text">U</div>
-          <div class="overflow-hidden min-w-0 flex-1">
+          <div class="overflow-hidden min-w-0 flex-1 sidebar-hide-on-min">
             <h5 class="text-xs font-bold text-slate-900 truncate" id="user-display-name">Username</h5>
             <span class="text-[9px] uppercase tracking-wider font-bold text-indigo-600 truncate block" id="user-display-role">ROLE</span>
           </div>
@@ -157,7 +224,7 @@
       </div>
 
       <!-- Logout block -->
-      <div class="p-4 border-t border-slate-100">
+      <div class="p-4 border-t border-slate-100" id="sidebar-logout-box">
         <button onclick="handleLogout()" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all">
           <span class="sidebar-text" id="sidebar-logout-lang">Keluar Sesi</span>
           <i class="fa-solid fa-right-from-bracket shrink-0"></i>
@@ -310,6 +377,12 @@
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1" id="lang-welcome-desc-label">Paragraf Deskripsi Landing</label>
                 <textarea id="admin-welcome-desc" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold outline-none resize-none"></textarea>
+              </div>
+
+              <div class="border-t border-slate-100 pt-4">
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1" id="lang-global-api-key-label">Kunci API Gemini Global (Berlaku Massal)</label>
+                <input type="password" id="admin-gemini-key" placeholder="AI Key untuk semua guru & siswa..." class="w-full px-3 py-2 border border-indigo-100 rounded-xl text-xs text-indigo-700 font-mono outline-none focus:ring-1 focus:ring-indigo-600 bg-white shadow-sm">
+                <p class="text-[9px] text-slate-400 mt-1" id="lang-global-api-key-desc">Jika diisi oleh Admin, kunci ini akan digunakan secara otomatis oleh semua Guru dan Siswa di seluruh perangkat tanpa harus memasukkan kunci sendiri.</p>
               </div>
 
               <div>
@@ -888,7 +961,9 @@
         canvas_preview_header: "Pratinjau Sandbox Interaktif (Uji Coba Langsung)",
         canvas_btn_publish: "Terbitkan ke Rencana Pembelajaran",
         logo_bg_title: "Logo & Latar Belakang Portal",
-        customize_desc: "Ubah nama, slogan, deskripsi, gambar latar belakang dashboard, dan logo utama Moodle Anda secara penuh di sini."
+        customize_desc: "Ubah nama, slogan, deskripsi, gambar latar belakang dashboard, dan logo utama Moodle Anda secara penuh di sini.",
+        global_api_key_label: "Kunci API Gemini Global (Berlaku Massal)",
+        global_api_key_desc: "Jika diisi oleh Admin, kunci ini akan digunakan secara otomatis oleh semua Guru dan Siswa di seluruh perangkat tanpa harus memasukkan kunci sendiri."
       },
       en: {
         login_title: "Access Portal",
@@ -971,7 +1046,9 @@
         canvas_preview_header: "Interactive Sandbox Live Preview",
         canvas_btn_publish: "Publish to Course Plan",
         logo_bg_title: "Logo & Portal Background",
-        customize_desc: "Change name, welcome title, landing description, portal background, and institute logo details."
+        customize_desc: "Change name, welcome title, landing description, portal background, and institute logo details.",
+        global_api_key_label: "Global Gemini API Key (Mass Deployment)",
+        global_api_key_desc: "If configured by the Admin, this key will be automatically inherited by all teachers and students across devices without needing individual keys."
       }
     };
 
@@ -1247,7 +1324,8 @@
         welcomeTitle: 'Portal Pembelajaran Elektronik Terpadu',
         welcomeDescription: 'Selamat datang di ekosistem digital MoodleLite. Kelola kelas, publikasikan media kaya secara langsung, dan pelajari materi dengan mudah.',
         bgDashboardUrl: '',
-        copyrightText: '© 2026 MoodleLite Academic Campus'
+        copyrightText: '© 2026 MoodleLite Academic Campus',
+        geminiApiKey: '' /* TEMPEL DI SINI UNTUK DEPLOY MASAL: Tuliskan "AI_KEY_ANDA" agar langsung terbawa di seluruh perangkat secara bawaan */
       },
       users: [
         { id: 'u1', name: 'Sistem Administrator', email: 'admin@moodlelite.ac.id', password: 'admin123', role: 'admin' },
@@ -1445,6 +1523,9 @@
       safeSetText('lang-welcome-title-label', t.welcome_title_label);
       safeSetText('lang-welcome-desc-label', t.welcome_desc_label);
       safeSetText('lang-theme-color-label', t.theme_color_label);
+      
+      safeSetText('lang-global-api-key-label', t.global_api_key_label);
+      safeSetText('lang-global-api-key-desc', t.global_api_key_desc);
 
       // User Accounts translations
       safeSetText('lang-sidebar-users', t.sidebar_users);
@@ -1555,11 +1636,17 @@
       const toggleIcon = document.getElementById('sidebar-toggle-icon');
       
       if (state.isSidebarOpen) {
-        if (sidebarEl) sidebarEl.className = "bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 transition-all duration-300 w-full md:w-64";
+        if (sidebarEl) {
+          sidebarEl.className = "bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 transition-all duration-300 w-full md:w-64";
+          sidebarEl.classList.remove('aside-minimized');
+        }
         if (toggleIcon) toggleIcon.className = "fa-solid fa-arrow-left";
         document.querySelectorAll('.sidebar-text').forEach(el => el.style.display = "inline");
       } else {
-        if (sidebarEl) sidebarEl.className = "bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 transition-all duration-300 w-0 md:w-16 md:overflow-hidden";
+        if (sidebarEl) {
+          sidebarEl.className = "bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 transition-all duration-300 w-0 md:w-16 md:overflow-hidden";
+          sidebarEl.classList.add('aside-minimized');
+        }
         if (toggleIcon) toggleIcon.className = "fa-solid fa-arrow-right";
         document.querySelectorAll('.sidebar-text').forEach(el => el.style.display = "none");
       }
@@ -1807,6 +1894,8 @@
       safeSetValue('admin-welcome-title', state.siteSettings.welcomeTitle);
       safeSetValue('admin-welcome-desc', state.siteSettings.welcomeDescription);
       safeSetValue('admin-bg-url', state.siteSettings.bgDashboardUrl);
+      
+      safeSetValue('admin-gemini-key', state.siteSettings.geminiApiKey || '');
 
       // Apply logo preview in admin panel
       applyLogoAcrossPlatform(state.siteSettings.logoUrl);
@@ -1879,6 +1968,9 @@
       state.siteSettings.welcomeTitle = document.getElementById('admin-welcome-title').value;
       state.siteSettings.welcomeDescription = document.getElementById('admin-welcome-desc').value;
       state.siteSettings.bgDashboardUrl = document.getElementById('admin-bg-url').value;
+      
+      state.siteSettings.geminiApiKey = document.getElementById('admin-gemini-key').value.trim();
+      
       saveStateToLocal();
 
       applyGlobalSiteSettingsStyles();
@@ -3450,36 +3542,10 @@
         `;
       }
 
-      // API Key presence verification
-      if (!state.geminiApiKey) {
-        // Fallback offline preset compilation loader
-        setTimeout(() => {
-          const type = document.getElementById('ai-canvas-template').value;
-          let code = AI_CANVAS_PRESETS[type] || AI_CANVAS_PRESETS.cell;
-          
-          // Re-inject escaped script tags safely
-          code = code.replace(/\[\[SCRIPT_OPEN\]\]/g, '<script>').replace(/\[\[SCRIPT_CLOSE\]\]/g, '<\/script>');
-
-          state.aiCanvasStudio.generatedCode = code;
-          state.aiCanvasStudio.title = title;
-          state.aiCanvasStudio.prompt = promptText;
-          saveStateToLocal();
-
-          // Render live preview iframe
-          if (container) container.innerHTML = `<iframe srcdoc="${code.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900"></iframe>`;
-          
-          const publishBox = document.getElementById('ai-canvas-publish-box');
-          if (publishBox) publishBox.classList.remove('hidden');
-          if (genBtn) {
-            genBtn.disabled = false;
-            genBtn.innerHTML = `<i class="fa-solid fa-sparkles"></i> <span>Hasilkan dengan Gemini AI</span>`;
-          }
-        }, 1200);
-        return;
-      }
+      const apiKey = state.geminiApiKey || state.siteSettings.geminiApiKey || '';
 
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${state.geminiApiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -3492,10 +3558,11 @@
           })
         });
 
-        if (!response.ok) throw new Error("Gagal memanggil API Gemini. Periksa kembali kunci API Anda.");
+        if (!response.ok) throw new Error("Gagal memanggil API Gemini.");
         
         const resData = await response.json();
-        let rawCode = resData.candidates[0].content.parts[0].text;
+        let rawCode = resData?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!rawCode) throw new Error("Respon kosong");
         
         // Clean markdown backticks wrapper if returned
         rawCode = rawCode.replace(/^```html\s*/i, '').replace(/```\s*$/i, '');
@@ -3505,30 +3572,28 @@
         state.aiCanvasStudio.prompt = promptText;
         saveStateToLocal();
 
-        if (container) container.innerHTML = `<iframe srcdoc="${rawCode.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900"></iframe>`;
+        if (container) container.innerHTML = `<iframe srcdoc="${rawCode.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900" sandbox="allow-scripts"></iframe>`;
         const publishBox = document.getElementById('ai-canvas-publish-box');
         if (publishBox) publishBox.classList.remove('hidden');
       } catch (err) {
-        if (container) {
-          container.innerHTML = `
-            <div class="text-red-500 p-4 text-xs font-bold flex flex-col items-center">
-              <i class="fa-solid fa-circle-exclamation text-2xl mb-2"></i>
-              <span>Gagal Memanggil AI: ${err.message}</span>
-              <span class="text-[10px] text-slate-550 font-normal mt-1">Menggunakan preset simulasi luring sebagai alternatif fallback.</span>
-            </div>
-          `;
-        }
-        // Automatic fallback rendering
-        setTimeout(() => {
-          const type = document.getElementById('ai-canvas-template').value;
-          let code = AI_CANVAS_PRESETS[type] || AI_CANVAS_PRESETS.cell;
-          code = code.replace(/\[\[SCRIPT_OPEN\]\]/g, '<script>').replace(/\[\[SCRIPT_CLOSE\]\]/g, '<\/script>');
-          state.aiCanvasStudio.generatedCode = code;
-          saveStateToLocal();
-          if (container) container.innerHTML = `<iframe srcdoc="${code.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900"></iframe>`;
-          const publishBox = document.getElementById('ai-canvas-publish-box');
-          if (publishBox) publishBox.classList.remove('hidden');
-        }, 2000);
+        console.warn("AI generation failed, fallback to local preset:", err);
+        // Fallback offline preset compilation loader
+        const type = document.getElementById('ai-canvas-template').value;
+        let code = AI_CANVAS_PRESETS[type] || AI_CANVAS_PRESETS.cell;
+        
+        // Re-inject escaped script tags safely
+        code = code.replace(/\[\[SCRIPT_OPEN\]\]/g, '<script>').replace(/\[\[SCRIPT_CLOSE\]\]/g, '<\/script>');
+
+        state.aiCanvasStudio.generatedCode = code;
+        state.aiCanvasStudio.title = title;
+        state.aiCanvasStudio.prompt = promptText;
+        saveStateToLocal();
+
+        // Render live preview iframe
+        if (container) container.innerHTML = `<iframe srcdoc="${code.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900" sandbox="allow-scripts"></iframe>`;
+        
+        const publishBox = document.getElementById('ai-canvas-publish-box');
+        if (publishBox) publishBox.classList.remove('hidden');
       } finally {
         if (genBtn) {
           genBtn.disabled = false;
@@ -3554,16 +3619,10 @@
         `;
       }
 
-      if (!state.geminiApiKey) {
-        setTimeout(() => {
-          showCustomAlert("Offline Fallback", "Kunci API Gemini tidak aktif. Fitur modifikasi iteratif memerlukan koneksi AI riil.", "error");
-          if (container) container.innerHTML = `<iframe srcdoc="${state.aiCanvasStudio.generatedCode.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900"></iframe>`;
-        }, 1000);
-        return;
-      }
+      const apiKey = state.geminiApiKey || state.siteSettings.geminiApiKey || '';
 
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${state.geminiApiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -3579,15 +3638,17 @@
         if (!response.ok) throw new Error("Gagal memperbarui kode.");
         
         const resData = await response.json();
-        let rawCode = resData.candidates[0].content.parts[0].text;
+        let rawCode = resData?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!rawCode) throw new Error("Respon kosong");
         rawCode = rawCode.replace(/^```html\s*/i, '').replace(/```\s*$/i, '');
 
         state.aiCanvasStudio.generatedCode = rawCode;
         saveStateToLocal();
-        if (container) container.innerHTML = `<iframe srcdoc="${rawCode.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900"></iframe>`;
+        if (container) container.innerHTML = `<iframe srcdoc="${rawCode.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900" sandbox="allow-scripts"></iframe>`;
       } catch (err) {
-        showCustomAlert("Error", err.message, "error");
-        if (container) container.innerHTML = `<iframe srcdoc="${state.aiCanvasStudio.generatedCode.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900"></iframe>`;
+        console.warn("AI Canvas revision failed, restoring current state:", err);
+        showCustomAlert("Offline Mode", state.lang === 'id' ? "Gagal memproses AI. Modifikasi iteratif memerlukan koneksi AI riil." : "AI processing failed. Iterative modifications require an active AI connection.", "error");
+        if (container) container.innerHTML = `<iframe srcdoc="${state.aiCanvasStudio.generatedCode.replace(/"/g, '&quot;')}" class="w-full h-full border-0 bg-slate-900" sandbox="allow-scripts"></iframe>`;
       }
     }
 
@@ -3776,86 +3837,82 @@
       board.appendChild(loader);
       board.scrollTop = board.scrollHeight;
 
-      // Online vs Offline answers mapper (In-context learning with empty API key support)
-      // We prioritize using model "gemini-3-flash-preview"
-      const apiKey = state.geminiApiKey || ''; 
-      if (apiKey) {
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-          
-          let systemInstructionText = "Anda adalah asisten pintar MoodleLite LMS. ";
-          if (state.assistantMode === 'teacher') {
-            systemInstructionText += "Anda berada dalam Mode Panduan Guru. Bantu guru mendesain materi, kuis, soal pemrograman, dan silabus akademik dengan ramah.";
-          } else if (state.assistantMode === 'admin') {
-            systemInstructionText += "Anda berada dalam Mode Panduan Admin. Bantu admin mengubah logo, mengelola latar belakang, dan mendaftarkan akun siswa baru.";
-          } else {
-            systemInstructionText += "Bantu semua guru, siswa, dan admin memahami fungsionalitas timelime, drag & drop, dan kuis.";
-          }
-
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: geminiHistory.map(h => ({
-                role: h.role === 'model' ? 'model' : 'user',
-                parts: [{ text: h.text }]
-              })),
-              systemInstruction: {
-                parts: [{ text: systemInstructionText }]
-              }
-            })
-          });
-
-          if (!response.ok) throw new Error();
-          
-          const resData = await response.json();
-          const reply = resData.candidates[0].content.parts[0].text;
-          
-          const loaderEl = document.getElementById('gemini-msg-loader');
-          if (loaderEl) loaderEl.remove();
-          geminiHistory.push({ role: 'model', text: reply });
-          renderGeminiChatMessages();
-          return;
-        } catch (err) {
-          // Fallback offline automatically on errors
+      const apiKey = state.geminiApiKey || state.siteSettings.geminiApiKey || ''; 
+      
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+        
+        let systemInstructionText = "Anda adalah asisten pintar MoodleLite LMS. ";
+        if (state.assistantMode === 'teacher') {
+          systemInstructionText += "Anda berada dalam Mode Panduan Guru. Bantu guru mendesain materi, kuis, soal pemrograman, dan silabus akademik dengan ramah.";
+        } else if (state.assistantMode === 'admin') {
+          systemInstructionText += "Anda berada dalam Mode Panduan Admin. Bantu admin mengubah logo, mengelola latar belakang, dan mendaftarkan akun siswa baru.";
+        } else {
+          systemInstructionText += "Bantu semua guru, siswa, dan admin memahami fungsionalitas timelime, drag & drop, dan kuis.";
         }
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: geminiHistory.map(h => ({
+              role: h.role === 'model' ? 'model' : 'user',
+              parts: [{ text: h.text }]
+            })),
+            systemInstruction: {
+              parts: [{ text: systemInstructionText }]
+            }
+          })
+        });
+
+        if (!response.ok) throw new Error("API call returned non-OK status");
+        
+        const resData = await response.json();
+        const reply = resData?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!reply) throw new Error("Received empty text candidate from Gemini API");
+        
+        const loaderEl = document.getElementById('gemini-msg-loader');
+        if (loaderEl) loaderEl.remove();
+        geminiHistory.push({ role: 'model', text: reply });
+        renderGeminiChatMessages();
+        return; // Successfully completed
+      } catch (err) {
+        console.warn("Real Gemini API request failed. Activating smart offline NLP fallback:", err);
       }
 
       // Offline intelligent rules-matching fallback generator (Simulating standard queries safely)
-      setTimeout(() => {
-        const loaderEl = document.getElementById('gemini-msg-loader');
-        if (loaderEl) loaderEl.remove();
-        
-        let answer = state.lang === 'id' 
-          ? 'Maaf, saya tidak memahami pertanyaan tersebut secara spesifik. Silakan hubungkan **API Key Gemini** Anda pada menu asisten di sebelah kiri modal AI Canvas Studio untuk respon yang lebih dinamis dan cerdas!' 
-          : 'Sorry, I did not understand that specific question. Please connect a valid **Gemini API Key** under the assistant menu inside AI Canvas Studio for fully dynamic and intelligent responses!';
+      const loaderEl = document.getElementById('gemini-msg-loader');
+      if (loaderEl) loaderEl.remove();
+      
+      let answer = state.lang === 'id' 
+        ? 'Maaf, saya tidak memahami pertanyaan tersebut secara spesifik. Silakan hubungkan **API Key Gemini** Anda pada menu asisten di sebelah kiri modal AI Canvas Studio untuk respon yang lebih dinamis dan cerdas!' 
+        : 'Sorry, I did not understand that specific question. Please connect a valid **Gemini API Key** under the assistant menu inside AI Canvas Studio for fully dynamic and intelligent responses!';
 
-        const lowerPrompt = prompt.toLowerCase();
-        if (lowerPrompt.includes('kuis') || lowerPrompt.includes('quiz')) {
-          answer = state.lang === 'id'
-            ? 'Untuk membuat **Kuis Baru**:\n1. Masuk ke halaman kelas Anda.\n2. Klik tombol **"Aktifkan Mode Ubah"** di sudut kanan atas.\n3. Di salah satu pertemuan, klik **"Tambahkan Aktivitas / Sumber Daya Baru"**.\n4. Pilih tipe **"Evaluation Exam Quiz"**.\n5. Tulis Judul, Deskripsi Kuis, lalu terbitkan ke kelas.'
-            : 'To create a **New Quiz**:\n1. Enter your active Classroom Space.\n2. Click **"Turn Edit On"** at the top right.\n3. Within a section topic, click **"Add New Resource"**.\n4. Select **"Evaluation Exam Quiz"**.\n5. Input Title, Instructions, and publish to the student timeline.';
-        } else if (lowerPrompt.includes('drag') || lowerPrompt.includes('susun') || lowerPrompt.includes('rearrange') || lowerPrompt.includes('geser')) {
-          answer = state.lang === 'id'
-            ? 'Untuk mengatur urutan materi dengan **Drag & Drop**:\n1. Masuk ke kelas dan klik **"Aktifkan Mode Ubah"**.\n2. Pada bagian kiri setiap pertemuan atau materi, terdapat pegangan ikon titik enam (**grip**).\n3. Tahan tombol mouse Anda pada grip tersebut, lalu seret (drag) ke atas atau ke bawah ke lokasi yang Anda inginkan.'
-            : 'To use the **Drag & Drop timeline rearrangement**:\n1. Enter classroom space and toggle **"Turn Edit On"**.\n2. Grab the six-dots (**grip**) handle on the left of any section or learning material card.\n3. Hold and drag up or down to rearrange elements instantly on screen.';
-        } else if (lowerPrompt.includes('logo') || lowerPrompt.includes('ubah logo') || lowerPrompt.includes('change logo')) {
-          answer = state.lang === 'id'
-            ? 'Untuk **Mengubah Logo Portal**:\n1. Masuk ke menu **Kustomisasi Portal** di bilah kiri.\n2. Pada bagian **Logo & Latar Belakang Portal**, Anda dapat menekan tombol "Browse" untuk mengunggah logo gambar dari komputer secara lokal, atau memasukkan Tautan URL gambar secara manual.\n3. Klik **Simpan Pengaturan** untuk mempublikasikannya ke seluruh portal secara global.'
-            : 'To **Change your LMS Logo**:\n1. Navigate to the **Portal Customization** tab on the left sidebar.\n2. Under **Logo & Portal Background**, you can upload a local PNG/JPG logo file directly, or paste an external image URL.\n3. Click **Save Settings** to globally apply the branding to the login and sidebar elements.';
-        } else if (lowerPrompt.includes('tambah akun') || lowerPrompt.includes('add student') || lowerPrompt.includes('registrasi')) {
-          answer = state.lang === 'id'
-            ? 'Untuk **Mendaftarkan Akun Baru**:\n1. Masuk ke menu **Manajemen Akun** di bilah kiri.\n2. Isi form **Registrasi Anggota Baru** dengan melengkapi Nama, Surel, Kata Sandi, dan Peran (Siswa, Guru, Admin).\n3. Tekan **Tambahkan ke Daftar Sementara**.\n4. Klik **Simpan Perubahan Akun** di bagian atas untuk menyimpan data secara permanen.'
-            : 'To **Register New Accounts**:\n1. Open the **User Management** tab on the left sidebar.\n2. Complete the **Register New Member** form with Name, Email, Password, and Role.\n3. Click **Add to Temporary List**.\n4. Tap **Save Account Changes** at the top right to permanently write the accounts directory.';
-        } else if (lowerPrompt.includes('tema') || lowerPrompt.includes('warna') || lowerPrompt.includes('theme') || lowerPrompt.includes('color')) {
-          answer = state.lang === 'id'
-            ? 'Untuk **Mengubah Tema Warna**:\n1. Masuk ke tab **Kustomisasi Portal**.\n2. Pada bagian paling bawah kanan, pilih salah satu dari 5 lingkaran warna utama sistem (Indigo, Emerald, Rose, Amber, atau Sky).\n3. Klik **Simpan Pengaturan** di bagian atas untuk langsung menerapkan tema warna kustom baru Anda!'
-            : 'To **Change the System Theme Color**:\n1. Navigate to the **Portal Customization** page.\n2. At the bottom right, select one of the 5 system primary colors (Indigo, Emerald, Rose, Amber, or Sky).\n3. Click **Save Settings** at the top right to globally apply the new theme palette!';
-        }
+      const lowerPrompt = prompt.toLowerCase();
+      if (lowerPrompt.includes('kuis') || lowerPrompt.includes('quiz')) {
+        answer = state.lang === 'id'
+          ? 'Untuk membuat **Kuis Baru**:\n1. Masuk ke halaman kelas Anda.\n2. Klik tombol **"Aktifkan Mode Ubah"** di sudut kanan atas.\n3. Di salah satu pertemuan, klik **"Tambahkan Aktivitas / Sumber Daya Baru"**.\n4. Pilih tipe **"Evaluation Exam Quiz"**.\n5. Tulis Judul, Deskripsi Kuis, lalu terbitkan ke kelas.'
+          : 'To create a **New Quiz**:\n1. Enter your active Classroom Space.\n2. Click **"Turn Edit On"** at the top right.\n3. Within a section topic, click **"Add New Resource"**.\n4. Select **"Evaluation Exam Quiz"**.\n5. Input Title, Instructions, and publish to the student timeline.';
+      } else if (lowerPrompt.includes('drag') || lowerPrompt.includes('susun') || lowerPrompt.includes('rearrange') || lowerPrompt.includes('geser')) {
+        answer = state.lang === 'id'
+          ? 'Untuk mengatur urutan materi dengan **Drag & Drop**:\n1. Masuk ke kelas dan klik **"Aktifkan Mode Ubah"**.\n2. Pada bagian kiri setiap pertemuan atau materi, terdapat pegangan ikon titik enam (**grip**).\n3. Tahan tombol mouse Anda pada grip tersebut, lalu seret (drag) ke atas atau ke bawah ke lokasi yang Anda inginkan.'
+          : 'To use the **Drag & Drop timeline rearrangement**:\n1. Enter classroom space and toggle **"Turn Edit On"**.\n2. Grab the six-dots (**grip**) handle on the left of any section or learning material card.\n3. Hold and drag up or down to rearrange elements instantly on screen.';
+      } else if (lowerPrompt.includes('logo') || lowerPrompt.includes('ubah logo') || lowerPrompt.includes('change logo')) {
+        answer = state.lang === 'id'
+          ? 'Untuk **Mengubah Logo Portal**:\n1. Masuk ke menu **Kustomisasi Portal** di bilah kiri.\n2. Pada bagian **Logo & Latar Belakang Portal**, Anda dapat menekan tombol "Browse" untuk mengunggah logo gambar dari komputer secara lokal, atau memasukkan Tautan URL gambar secara manual.\n3. Klik **Simpan Pengaturan** untuk mempublikasikannya ke seluruh portal secara global.'
+          : 'To **Change your LMS Logo**:\n1. Navigate to the **Portal Customization** tab on the left sidebar.\n2. Under **Logo & Portal Background**, you can upload a local PNG/JPG logo file directly, or paste an external image URL.\n3. Click **Save Settings** to globally apply the branding to the login and sidebar elements.';
+      } else if (lowerPrompt.includes('tambah akun') || lowerPrompt.includes('add student') || lowerPrompt.includes('registrasi')) {
+        answer = state.lang === 'id'
+          ? 'Untuk **Mendaftarkan Akun Baru**:\n1. Masuk ke menu **Manajemen Akun** di bilah kiri.\n2. Isi form **Registrasi Anggota Baru** dengan melengkapi Nama, Surel, Kata Sandi, dan Peran (Siswa, Guru, Admin).\n3. Tekan **Tambahkan ke Daftar Sementara**.\n4. Klik **Simpan Perubahan Akun** di bagian atas untuk menyimpan data secara permanen.'
+          : 'To **Register New Accounts**:\n1. Open the **User Management** tab on the left sidebar.\n2. Complete the **Register New Member** form with Name, Email, Password, and Role.\n3. Click **Add to Temporary List**.\n4. Tap **Save Account Changes** at the top right to permanently write the accounts directory.';
+      } else if (lowerPrompt.includes('tema') || lowerPrompt.includes('warna') || lowerPrompt.includes('theme') || lowerPrompt.includes('color')) {
+        answer = state.lang === 'id'
+          ? 'Untuk **Mengubah Tema Warna**:\n1. Masuk ke tab **Kustomisasi Portal**.\n2. Pada bagian paling bawah kanan, pilih salah satu dari 5 lingkaran warna utama sistem (Indigo, Emerald, Rose, Amber, atau Sky).\n3. Klik **Simpan Pengaturan** di bagian atas untuk langsung menerapkan tema warna kustom baru Anda!'
+          : 'To **Change the System Theme Color**:\n1. Navigate to the **Portal Customization** page.\n2. At the bottom right, select one of the 5 system primary colors (Indigo, Emerald, Rose, Amber, or Sky).\n3. Click **Save Settings** at the top right to globally apply the new theme palette!';
+      }
 
-        geminiHistory.push({ role: 'model', text: answer });
-        renderGeminiChatMessages();
-      }, 1000);
+      geminiHistory.push({ role: 'model', text: answer });
+      renderGeminiChatMessages();
     }
 
     // Start LMS Application
@@ -3868,6 +3925,25 @@
       setLanguage(state.lang || 'id');
       updateGeminiKeyIndicator();
       applyGlobalSiteSettingsStyles();
+
+      // Restore sidebar state cleanly on load
+      const sidebarEl = document.getElementById('sidebar');
+      const toggleIcon = document.getElementById('sidebar-toggle-icon');
+      if (state.isSidebarOpen) {
+        if (sidebarEl) {
+          sidebarEl.className = "bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 transition-all duration-300 w-full md:w-64";
+          sidebarEl.classList.remove('aside-minimized');
+        }
+        if (toggleIcon) toggleIcon.className = "fa-solid fa-arrow-left";
+        document.querySelectorAll('.sidebar-text').forEach(el => el.style.display = "inline");
+      } else {
+        if (sidebarEl) {
+          sidebarEl.className = "bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 transition-all duration-300 w-0 md:w-16 md:overflow-hidden";
+          sidebarEl.classList.add('aside-minimized');
+        }
+        if (toggleIcon) toggleIcon.className = "fa-solid fa-arrow-right";
+        document.querySelectorAll('.sidebar-text').forEach(el => el.style.display = "none");
+      }
     };
   </script>
 </body>
