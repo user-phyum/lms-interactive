@@ -759,7 +759,7 @@
   </div>
 
   <!-- ================= FLOATING CHATBOT: GEMINI ASSISTANT ================= -->
-  <div id="gemini-assistant-trigger" class="hidden fixed bottom-6 right-6 z-40 p-4 rounded-full shadow-2xl text-white transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 cursor-pointer">
+  <div id="gemini-assistant-trigger" onclick="toggleGeminiChatWindow()" class="hidden fixed bottom-6 right-6 z-40 p-4 rounded-full shadow-2xl text-white transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 cursor-pointer">
     <i class="fa-solid fa-message text-xl" id="gemini-trigger-icon"></i>
   </div>
 
@@ -1214,9 +1214,13 @@
 
     // Emulated Persistent Local State Load
     let savedState = null;
+    let initialApiKey = '';
     try {
       savedState = localStorage.getItem('moodle_lite_state_persistent');
-    } catch(e) {}
+      initialApiKey = localStorage.getItem('moodle_gemini_api_key') || '';
+    } catch(e) {
+      console.warn("Storage access restricted. Running in memory mode.");
+    }
 
     let state = savedState ? JSON.parse(savedState) : {
       lang: 'id',
@@ -1227,7 +1231,7 @@
       isSidebarOpen: true,
       isEditingMode: false,
       activeSectionIdForActivity: null,
-      geminiApiKey: localStorage.getItem('moodle_gemini_api_key') || '',
+      geminiApiKey: initialApiKey,
       assistantMode: 'general',
       aiCanvasStudio: {
         title: '',
@@ -1313,6 +1317,9 @@
         }
       }
     };
+
+    // Ensure initial API key is bound if available
+    state.geminiApiKey = initialApiKey;
 
     // Auto save state helper
     function saveStateToLocal() {
@@ -3393,7 +3400,9 @@
     // Save and configure Gemini API keys
     function saveGeminiApiKey(key) {
       state.geminiApiKey = key.trim();
-      localStorage.setItem('moodle_gemini_api_key', state.geminiApiKey);
+      try {
+        localStorage.setItem('moodle_gemini_api_key', state.geminiApiKey);
+      } catch(e) {}
       saveStateToLocal();
       updateGeminiKeyIndicator();
     }
